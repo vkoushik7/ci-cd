@@ -18,3 +18,13 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: npm i
       - run: node index.js
+  test:
+    runs-on: ubuntu-latest
+    services:
+      web:
+        image: nginx:latest
+        ports:
+          - 8080:80
+    steps:
+      - name: Test web server
+        run: curl http://localhost:8080
