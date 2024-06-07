@@ -30,9 +30,9 @@ jobs:
       run: |
         echo "$EC2_SSH_KEY" > ec2_key.pem
         chmod 600 ec2_key.pem
-        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p $EC2_PATH && sudo chown -R $EC2_USER:$EC2_USER $EC2_PATH"
+        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo mkdir -p $EC2_PATH && sudo chown -R $EC2_USER:$EC2_USER $EC2_PATH"
         rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" . $EC2_USER@$EC2_HOST:$EC2_PATH
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST <<EOF
           cd $EC2_PATH
           npm install
-          pm2 restart app || pm2 start app.js --name "app"
+          node index.js
