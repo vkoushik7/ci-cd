@@ -12,5 +12,9 @@
   "dependencies": {
     "express": "^4.19.2",
     "pm2": "^5.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
   }
 }
