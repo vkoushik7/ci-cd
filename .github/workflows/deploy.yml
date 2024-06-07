@@ -39,5 +39,5 @@ jobs:
         rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" ./build $EC2_USER@$EC2_HOST:$EC2_PATH
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST <<EOF
           cd $EC2_PATH
-          pm2 start ci-cd
+          node index.js
 EOF
