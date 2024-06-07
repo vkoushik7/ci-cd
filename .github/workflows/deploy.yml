@@ -9,17 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: checkout code
-      uses: actions/checkout@v2
+    # steps:
+    # - name: checkout code
+    #   uses: actions/checkout@v2
     
-    - name: set up node js
-      uses: actions/setup-node@v2
-      with: 
-        node-version: '14'
+    # - name: set up node js
+    #   uses: actions/setup-node@v2
+    #   with: 
+    #     node-version: '14'
     
-    - name: install dependencies
-      run: npm install
+    # - name: install dependencies
+    #   run: npm install
     
     
     
@@ -36,6 +36,8 @@ jobs:
         chmod 600 ec2_key.pem
         rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" ./index.js ./package.json $EC2_USER@$EC2_HOST:$EC2_PATH
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+          sudo apt upgrade -y
+          sudo apt install nodejs
           cd $EC2_PATH
           npm install --production
           node index.js
