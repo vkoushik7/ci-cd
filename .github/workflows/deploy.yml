@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +20,6 @@ jobs:
     
     - name: install dependencies
       run: npm install
-    
-    
-    
-    
 
     - name: deploy to EC2
       env:
@@ -34,9 +30,9 @@ jobs:
       run: |
         echo "$EC2_SSH_KEY" > ec2_key.pem
         chmod 600 ec2_key.pem
-        rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" ./index.js ./package.json $EC2_USER@$EC2_HOST:$EC2_PATH
-        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          sudo apt install nodejs
+        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p $EC2_PATH && sudo chown -R $EC2_USER:$EC2_USER $EC2_PATH"
+        rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" . $EC2_USER@$EC2_HOST:$EC2_PATH
+        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST <<EOF
           cd $EC2_PATH
-          npm install --production
-          node index.js
+          npm install
+          pm2 restart app || pm2 start app.js --name "app"
