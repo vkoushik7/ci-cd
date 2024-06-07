@@ -9,17 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # steps:
-    # - name: checkout code
-    #   uses: actions/checkout@v2
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
     
-    # - name: set up node js
-    #   uses: actions/setup-node@v2
-    #   with: 
-    #     node-version: '14'
+    - name: set up node js
+      uses: actions/setup-node@v2
+      with: 
+        node-version: '14'
     
-    # - name: install dependencies
-    #   run: npm install
+    - name: install dependencies
+      run: npm install
     
     
     
@@ -30,13 +30,12 @@ jobs:
         EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         EC2_USER: ubuntu
         EC2_HOST: ec2-13-200-251-118.ap-south-1.compute.amazonaws.com
-        EC2_PATH: /home/ubuntu/ci-cd
+        EC2_PATH: /home/ci-cd
       run: |
         echo "$EC2_SSH_KEY" > ec2_key.pem
         chmod 600 ec2_key.pem
         rsync -avz -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" ./index.js ./package.json $EC2_USER@$EC2_HOST:$EC2_PATH
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          sudo apt upgrade -y
           sudo apt install nodejs
           cd $EC2_PATH
           npm install --production
