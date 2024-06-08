@@ -35,5 +35,5 @@ jobs:
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
           cd $EC2_PATH
           npm install
-          pm2 restart all || pm2 start index.js
+          npx pm2 start index.js
         EOF
