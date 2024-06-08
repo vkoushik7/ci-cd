@@ -1,27 +1,27 @@
-# Specify the language and version of the runtime environment
-language: node_js
-node_js:
-  - '14'
+# # Specify the language and version of the runtime environment
+# language: node_js
+# node_js:
+#   - '14'
 
-# Define the script to run tests
-script:
-  - npm install
-  - npm test
+# # Define the script to run tests
+# script:
+#   - npm install
+#   - npm test
 
-# Optionally, you can specify branches to build
-branches:
-  only:
-    - master
+# # Optionally, you can specify branches to build
+# branches:
+#   only:
+#     - master
 
-# Cache dependencies to speed up builds
-cache:
-  directories:
-    - node_modules
+# # Cache dependencies to speed up builds
+# cache:
+#   directories:
+#     - node_modules
 
-# Notifications (optional)
-notifications:
-  email:
-    recipients:
-      - vkrishnakoushik7@gmail.com
-    on_success: always
-    on_failure: always
+# # Notifications (optional)
+# notifications:
+#   email:
+#     recipients:
+#       - vkrishnakoushik7@gmail.com
+#     on_success: always
+#     on_failure: always
