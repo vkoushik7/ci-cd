@@ -30,10 +30,22 @@ jobs:
       run: |
         echo "$EC2_SSH_KEY" > ec2_key.pem
         chmod 600 ec2_key.pem
-        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p $EC2_PATH"
+        ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+          # Install Node.js and npm if not already installed
+          if ! command -v node &> /dev/null
+          then
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+          fi
+          # Create the directory if it doesn't exist
+          mkdir -p $EC2_PATH
+          exit
+        EOF
+        # Copy files to EC2
         rsync -avz --exclude '.git' --exclude 'node_modules' -e "ssh -i ec2_key.pem -o StrictHostKeyChecking=no" . $EC2_USER@$EC2_HOST:$EC2_PATH
+        # Run commands on EC2
         ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
           cd $EC2_PATH
           npm install
-          npx pm2 start index.js
+          pm2 restart all || pm2 start index.js
         EOF
