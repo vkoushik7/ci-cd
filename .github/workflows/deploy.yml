@@ -33,9 +33,8 @@ jobs:
         ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p $EC2_PATH"
         scp -i "ec2_key.pem" -o StrictHostKeyChecking=no ./index.js ./package.json $EC2_USER@$EC2_HOST:$EC2_PATH
         ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          sudo apt get update
-          sudo apt install nodejs
-          sudo apt install npm -y
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
           cd $EC2_PATH
           npm install
           node index.js
