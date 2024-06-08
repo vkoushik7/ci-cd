@@ -39,4 +39,5 @@ jobs:
           cd $EC2_PATH
           npm install
           node index.js
+          EOF
 
