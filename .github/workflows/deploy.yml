@@ -38,5 +38,5 @@ jobs:
           sudo apt install npm -y
           cd $EC2_PATH
           npm install
-          npx pm2 start index.js
+          node index.js
 
