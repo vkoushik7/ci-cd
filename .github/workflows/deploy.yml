@@ -18,8 +18,6 @@ jobs:
       with: 
         node-version: '14'
     
-    - name: Install dependencies
-      run: npm install
 
     - name: Deploy to EC2
       env:
@@ -32,7 +30,7 @@ jobs:
         chmod 600 ec2_key.pem
         ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "mkdir -p $EC2_PATH"
         scp -i "ec2_key.pem" -o StrictHostKeyChecking=no ./index.js ./package.json $EC2_USER@$EC2_HOST:$EC2_PATH
-        ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+        ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
           sudo apt-get update
           sudo apt-get install -y nodejs npm
           cd $EC2_PATH
