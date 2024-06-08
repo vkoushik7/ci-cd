@@ -35,6 +35,7 @@ jobs:
         ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
           sudo apt get update
           sudo apt install nodejs
+          sudo apt install npm
           cd $EC2_PATH
           npm install
           npx pm2 start index.js
